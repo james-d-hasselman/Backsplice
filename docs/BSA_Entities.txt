@@ -1,0 +1,117 @@
+- National Council
+  - Regions
+    - Areas
+	  - Councils
+  - Event
+  - Fundraiser
+  - Jamboree
+- Council
+  - Event
+  - Fundraiser
+  - Camporee
+  - Troops
+    - Scouts
+	- Equipment
+	- Leadership Positions
+	   - Position Code
+	   - Description
+	   - Applicable Program(s) (Cub, BSA, Venture)
+	- Committee
+	- Chartering Organization
+	- Meeting Place
+	- Meeting Time
+	- Meeting Agenda
+	- Patrols
+	  - Scouts
+	  - Names
+	- Scoutmasters
+	- Other adult members
+  - Camps
+    - Staff
+    - Weeks
+        - Troops
+            - Scouts
+            - Adults
+			- Events
+			- Fundraisers
+    - Programs
+        - Staff
+        - Sessions
+          - Scouts
+          - Quota
+    - Merit Badges
+        - Staff
+        - Sessions
+          - Scouts
+		    - Blue Cards
+          - Quota
+        - Requirements
+          - Identifier
+          - Alternate Requirement
+          - Description
+  - Adults
+  - Scouts
+  - District
+    - Camporee
+	- Fundraiser
+	- Event
+    - Troop
+    - Scout
+      - Unit type (can be more than one)
+      - Unit number
+      - Pack Scout Type (Tiger, Cub, Webelo)
+      - New to scouting?
+      - Former Scout?
+      - Former Venturer?
+      - Arrow of Light earned?
+      - Former Sea Scout?
+      - Transfer?
+      - Transfer from council?
+      - Membership Number
+      - Name
+      - Address
+      - Phone
+      - Grade
+      - DOB
+      - Ethnicity
+      - School
+      - Gender
+      - Boys Life?
+      - Merit Badges
+      - Achievements
+        - Requirements
+          - Identifier
+          - Alternate Requirement
+          - Description
+      - Ranks
+          - Name
+          - Requirements
+            - Identifier
+            - Alternate Requirement
+            - Description
+      - Position
+      - Guardian
+          - Name
+          - Address
+          - DOB
+          - Phone
+          - Office Phone
+          - Office Ext.
+          - Cell Phone
+          - Occupation
+          - Employer
+          - Email
+          - Gender
+          - Relationship (to guardee)
+	  - Tiger Cub adult partner?
+          - Cohabit with guardee?
+          - Previous Scouting Experience (describe)
+          - Read/approve/review about abuse
+    - Adult
+      - Rank
+      - Trainings
+      - Position
+    - Staff
+      - Position
+  - Staff
+    - Position

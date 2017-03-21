@@ -1,0 +1,40 @@
+Actors:
+
+* - actions that may not be needed
+? - means that I'm not sure what to do here
+
+Program Director
+- view programs (see a list of the programs for a week and the progress of each one)
+- start a new week of camp
+* finalize a week of camp
+- move scouts between programs
+- update scout details (misspellings, missing data)
+- update program details (misspellings)
+- change available periods
+* view staff details
+* add staff
+* delete staff
+* move staff between program areas
+
+Camp Director
+- view programs
+* add staff
+* delete staff
+* move staff between program areas
+
+Program Area Director
+- view all programs in their program area
+- view all staff in their program area
+- change all programs in their program area
+- change the instructor for a program
+
+Instructor
+- view all programs they are instructing
+- change a program
+- submit programs for approval (end of week)
+- take attendance
+- mark off requirements for scouts
+
+Program Area Staff?
+- view all programs they are assigned to
+- ?
