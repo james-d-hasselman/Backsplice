@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Backsplice - Create Paperwork{% endblock %}
+
+{% block nav %}
+<ul>
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'scouts' %}">Scouts</a></li>
+<li><a href="{% url 'instructors' %}">Instructors</a></li>
+<li><a href="{% url 'pending_requests' %}">Pending Requests</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<h1>Create Paperwork</h1>
+
+<form action="" method="post">
+    Week:
+    <select name="week">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select><br/>
+    Start Date: <input type="date"/><br/>
+    End Date: <input type="date"/><br/>
+    Doubleknot Roster: <input type="file" accept=".xls,.xlsx"/><br/>
+    <input type="submit" value="Create Paperwork"/>
+</form>
+{% endblock %}
