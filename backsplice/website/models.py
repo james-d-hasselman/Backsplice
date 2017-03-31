@@ -17,6 +17,13 @@ class Requirement(models.Model):
     letter = models.CharField(max_length=1)
     text = models.TextField()
 
+class Scout(models.Model):
+    first_name = models.CharField(max_length=35)
+    last_name = models.CharField(max_length=35)
+    middle_name = models.CharField(max_length=35)
+    unit = models.IntegerField()
+
+
 class Course(models.Model):
     instructor = models.ForeignKey(Instructor)
     name = models.CharField(max_length=70)
@@ -25,12 +32,7 @@ class Course(models.Model):
     requirements = models.ManyToManyField(Requirement)
     start_date = models.DateField()
     end_date = models.DateField()
-
-class Scout(models.Model):
-    first_name = models.CharField(max_length=35)
-    last_name = models.CharField(max_length=35)
-    middle_name = models.CharField(max_length=35)
-    unit = models.IntegerField()
+    scouts = models.ManyToManyField(Scout)
 
 # The merit badge requirements that a scout has completed
 class CourseRecord(models.Model):
