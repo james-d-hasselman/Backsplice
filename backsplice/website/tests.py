@@ -1,14 +1,57 @@
 from django.test import TestCase
 from website.util import doubleknot
-from website.models import Course, Scout
+from website.models import Course, Scout, Instructor, CourseReference
 import pyexcel
 import csv
-import io 
+import io
+import datetime
 
 # Create your tests here.
 class DoubleknotTests(TestCase):
 
     def setUp(self):
+        """
+        Setup function that prepares data used by the other tests.
+        """
+
+        rifle_instructor = Instructor(first_name='Ron', last_name='Lenkiewicz', 
+                               email='cooldipr@gmail.com')
+        rifle_instructor.save()
+
+        year = str(datetime.date.today().year)
+
+        rifle_shooting_reference = CourseReference(name='Rifle Shooting', 
+                                       period='period 1', 
+                                       instructor=rifle_instructor,
+                                       year=year)
+        rifle_shooting_reference.save()
+
+        archery_instructor = Instructor(first_name='Mary', last_name='Yanos',
+                                email='mary.yanos@gmail.com')
+        archery_instructor.save()
+
+        archery_reference = CourseReference(name='Archery MB', period='period 2', 
+                                instructor=archery_instructor, year=year)
+        archery_reference.save()
+
+        cooking_instructor = Instructor(first_name='Bill', last_name='Waters',
+                                email='muddy.waters@gmail.com')
+        cooking_instructor.save()
+
+        cooking_reference = CourseReference(name='Cooking', 
+                                period='periods 1 & 2',
+                                instructor=cooking_instructor, year=year)
+        cooking_reference.save()
+
+        brownsea_instructor = Instructor(first_name='Dan', last_name='Massey',
+                                  email='dan.massey@gmail.com')
+        brownsea_instructor.save()
+
+        brownsea_reference = CourseReference(name='Brownsea', 
+                                 period='all periods',
+                                 instructor=brownsea_instructor, year=year)
+        brownsea_reference.save()
+
         test_data = io.StringIO()
         test_data_writer = csv.writer(test_data)
         
@@ -74,27 +117,51 @@ class DoubleknotTests(TestCase):
        
         doubleknot.create_courses(self.test_doubleknot_roster)
 
-        # check that the courses were created appropriately
         courses = Course.objects.all()
         rifle_shooting = courses[0]
-        self.assertEqual(rifle_shooting.name, 'Rifle Shooting') 
-        self.assertEqual(rifle_shooting.period, 'period 1')
+        archery = courses[1]
+        cooking = courses[2]
+        brownsea = courses[3]
+
+        rifle_shooting_ref = rifle_shooting.course_reference
+        archery_ref = archery.course_reference
+        cooking_ref = cooking.course_reference
+        brownsea_ref = brownsea.course_reference
+
+        # check that the courses were created appropriately
+        self.assertEqual(rifle_shooting_ref.name, 'Rifle Shooting')
+        self.assertEqual(rifle_shooting_ref.period, 'period 1')
 
         archery = courses[1]
-        self.assertEqual(archery.name, 'Archery MB')
-        self.assertEqual(archery.period, 'period 2')
+        self.assertEqual(archery_ref.name, 'Archery MB')
+        self.assertEqual(archery_ref.period, 'period 2')
 
         cooking = courses[2]
-        self.assertEqual(cooking.name, 'Cooking')
-        self.assertEqual(cooking.period, 'periods 1 & 2') 
+        self.assertEqual(cooking_ref.name, 'Cooking')
+        self.assertEqual(cooking_ref.period, 'periods 1 & 2') 
 
         brownsea = courses[3]
-        self.assertEqual(brownsea.name, 'Brownsea')
-        self.assertEqual(brownsea.period, 'all periods') 
+        self.assertEqual(brownsea_ref.name, 'Brownsea')
+        self.assertEqual(brownsea_ref.period, 'all periods') 
+
+        # check that each course has the correct instructor
+        self.assertEquals(
+            rifle_shooting_ref.instructor.last_name, 'Lenkiewicz')
+
+        archery_ref = archery.course_reference
+        self.assertEquals(archery_ref.instructor.last_name, 'Yanos')
+
+        cooking_ref = cooking.course_reference
+        self.assertEquals(cooking_ref.instructor.last_name, 'Waters')
+
+        brownsea_ref = brownsea.course_reference
+        self.assertEquals(brownsea_ref.instructor.last_name, 'Massey')
 
         # check that all the scouts were created
         scouts = Scout.objects.all()
-        james = scouts[0]
+        self.assertEqual(len(scouts), 4)
+
+        james = Scout.objects.filter(first_name='James')[0]
         self.assertEqual(james.first_name, 'James')
         self.assertEqual(james.last_name, 'Hasselman')
         self.assertEqual(james.unit, 144)
@@ -127,3 +194,4 @@ class DoubleknotTests(TestCase):
         brownsea_scout = brownsea.scouts.all()[0]
         self.assertEquals(brownsea_scout.last_name, 'Odinson')
 
+        
