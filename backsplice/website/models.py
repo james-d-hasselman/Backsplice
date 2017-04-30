@@ -12,7 +12,16 @@ class Instructor(models.Model):
     middle_name = models.CharField(max_length=35)
     email = models.EmailField()
 
+# The course catalog according to Doubleknot. Used as a reference table 
+# for assigning instructor permissions.
+class CourseReference(models.Model):
+    name = models.CharField(max_length=70)
+    period = models.CharField(max_length=15)
+    instructor = models.ForeignKey(Instructor)
+    year = models.CharField(max_length=4)
+
 class Requirement(models.Model):
+    course_name = models.CharField(max_length=70)
     number = models.IntegerField()
     letter = models.CharField(max_length=1)
     text = models.TextField()
@@ -23,13 +32,9 @@ class Scout(models.Model):
     middle_name = models.CharField(max_length=35)
     unit = models.IntegerField()
 
-
 class Course(models.Model):
-    instructor = models.ForeignKey(Instructor)
-    name = models.CharField(max_length=70)
+    course_reference = models.ForeignKey(CourseReference)
     week = models.IntegerField()
-    period = models.CharField(max_length=15)
-    requirements = models.ManyToManyField(Requirement)
     start_date = models.DateField()
     end_date = models.DateField()
     scouts = models.ManyToManyField(Scout)
