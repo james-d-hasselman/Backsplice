@@ -194,4 +194,20 @@ class DoubleknotTests(TestCase):
         brownsea_scout = brownsea.scouts.all()[0]
         self.assertEquals(brownsea_scout.last_name, 'Odinson')
 
-        
+    def test_get_courses(self):
+        """
+        Given a doubleknot roster in standard Rodney format, get_courses() 
+        will return a list of all of the courses in the doubleknot roster.
+        """
+
+        courses = doubleknot.get_courses(self.test_doubleknot_roster)
+
+        self.assertEquals(courses[0]['name'], 'Rifle Shooting')
+        self.assertEquals(courses[0]['period'], 'period 1')
+        self.assertEquals(courses[1]['name'], 'Archery MB')
+        self.assertEquals(courses[1]['period'], 'period 2')
+        self.assertEquals(courses[2]['name'], 'Cooking')
+        self.assertEquals(courses[2]['period'], 'periods 1 & 2')
+        self.assertEquals(courses[3]['name'], 'Brownsea')
+        self.assertEquals(courses[3]['period'], 'all periods')
+

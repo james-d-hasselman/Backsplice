@@ -17,6 +17,19 @@ program_re = re.compile(r'^[^\(]*[^\s\(]')
 # re to find the troop number
 troop_re = re.compile(r'[0-9]{1,4}')
 
+def _get_file_type(doubleknot_roster):
+    """Takes a byte buffer representing a doubleknot roster and 
+    gets its file format."""
+    
+    mime_type = magic.from_buffer(doubleknot_roster, mime=True)
+    if mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        return 'xlsx'
+    elif mime_type == 'application/vnd.ms-excel':
+        return 'xls'
+    else:
+        return 'ods'
+
+
 def create_courses(doubleknot_roster):
     """Takes a byte buffer representing a doubleknot roster and 
     writes the courses and scouts to the Backsplice database.
@@ -46,13 +59,7 @@ def create_courses(doubleknot_roster):
                 course_scout.course_set.add(course)
             course.save()
 
-    mime_type = magic.from_buffer(doubleknot_roster, mime=True)
-    if mime_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        roster_file_type = 'xlsx'
-    elif mime_type == 'application/vnd.ms-excel':
-        roster_file_type = 'xls'
-    else:
-        roster_file_type = 'ods'
+    roster_file_type = _get_file_type(doubleknot_roster)
 
     # read the scouts/courses from the roster
     records = pyexcel.iget_records(file_type=roster_file_type, 
@@ -80,4 +87,30 @@ def create_courses(doubleknot_roster):
             course_name = temp_course_name
             period = temp_course_period
     create_course()
+
+def get_courses(doubleknot_roster):
+
+    roster_file_type = _get_file_type(doubleknot_roster)
+
+    # read the scouts/courses from the roster
+    records = pyexcel.iget_records(file_type=roster_file_type, 
+        file_content=doubleknot_roster)
+
+    courses = []
+    for record in records:
+        course_name = program_re.search(record['Description']).group(0)
+        period_results = period_re.search(record['Description'])
+        if not period_results == None:
+            period = period_results.group('period')
+        else:
+            period = ''
+        if (not len(courses) == 0 and (not courses[-1]['name'] == course_name 
+            or not courses[-1]['period'] == period)):
+            course = {'name' : course_name, 'period' : period}
+            courses.append(course)
+        elif len(courses) == 0:
+            course = {'name' : course_name, 'period' : period}
+            courses.append(course)
+
+    return courses
 

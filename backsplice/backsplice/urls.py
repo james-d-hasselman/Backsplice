@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^pending_requests/$', views.pending_requests, 
         name='pending_requests'),
     url(r'^create_paperwork/$', views.create_paperwork,
-        name='create_paperwork')
+        name='create_paperwork'),
+    url(r'^course_catalog/$', views.course_catalog, 
+        name='course_catalog'),
 ]

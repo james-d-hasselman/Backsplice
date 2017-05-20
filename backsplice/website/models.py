@@ -17,8 +17,11 @@ class Instructor(models.Model):
 class CourseReference(models.Model):
     name = models.CharField(max_length=70)
     period = models.CharField(max_length=15)
-    instructor = models.ForeignKey(Instructor)
+    instructor = models.ForeignKey(Instructor, null=True)
     year = models.CharField(max_length=4)
+
+    def __str__(self):
+        return self.name + ": " + self.period
 
 class Requirement(models.Model):
     course_name = models.CharField(max_length=70)
