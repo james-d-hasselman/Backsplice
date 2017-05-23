@@ -78,8 +78,15 @@ def course_catalog(request):
     return response
 
 def create_paperwork(request):
-    return render(request, 'create_paperwork.html')
-    return HttpResponse('HOME')
+    response = None
+    if request.method == 'POST':
+        if 'doubleknot_roster' in request.FILES:
+            doubleknot_roster = request.FILES['doubleknot_roster']
+            doubleknot.create_courses(doubleknot_roster.read())
+    else:
+        response = render(request, 'create_paperwork.html')
+
+    return response
 
 def scouts(request):
     return HttpResponse('SCOUTS')
