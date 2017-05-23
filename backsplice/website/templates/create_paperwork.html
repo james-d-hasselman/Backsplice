@@ -15,6 +15,7 @@
 <h1>Create Paperwork</h1>
 
 <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     Week:
     <select name="week">
         <option value="1">1</option>
@@ -23,7 +24,7 @@
     </select><br/>
     Start Date: <input type="date"/><br/>
     End Date: <input type="date"/><br/>
-    Doubleknot Roster: <input type="file" accept=".xls,.xlsx" name="doubleknot_roster"/><br/>
+    Doubleknot Roster: <input type="file" accept=".xls,.xlsx,.ods" name="doubleknot_roster"/><br/>
     <input type="submit" value="Create Paperwork"/>
 </form>
 {% endblock %}
