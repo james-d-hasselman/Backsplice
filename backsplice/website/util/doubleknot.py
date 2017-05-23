@@ -74,9 +74,15 @@ def create_courses(doubleknot_roster):
     end_date = start_date 
     # for each scout 
     for record in records:
+        print(record)
+        # TODO figure out what to do here. The period line fails on the
+        # Rodney Summer Camp Week line because there is no period.
         temp_course_name = program_re.search(record['Description']).group(0)
-        temp_course_period = period_re.search(
-            record['Description']).group('period')
+        period_re_results = period_re.search(
+            record['Description'])
+        temp_course_period = ''
+        if not period_re_results == None:
+            temp_course_period = period_re_results.group('period')
         if (temp_course_name == course_name and  
             temp_course_period == period):    
             scouts.append(record)
