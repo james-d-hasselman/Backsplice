@@ -13,7 +13,8 @@ class DoubleknotTests(TestCase):
         """
         Setup function that prepares data used by the other tests.
         """
-
+        
+        # Create all of the CourseReference records
         rifle_instructor = Instructor(first_name='Ron', last_name='Lenkiewicz', 
                                email='cooldipr@gmail.com')
         rifle_instructor.save()
@@ -52,6 +53,7 @@ class DoubleknotTests(TestCase):
                                  instructor=brownsea_instructor, year=year)
         brownsea_reference.save()
 
+        # Create a mock Doubleknot roster
         test_data = io.StringIO()
         test_data_writer = csv.writer(test_data)
         
