@@ -17,6 +17,8 @@ class Instructor(models.Model):
 class CourseReference(models.Model):
     name = models.CharField(max_length=70)
     period = models.CharField(max_length=15)
+    # should probably be many to many between instructors and courses but
+    # keep it simple for now.
     instructor = models.ForeignKey(Instructor, null=True)
     year = models.CharField(max_length=4)
 
@@ -24,7 +26,7 @@ class CourseReference(models.Model):
         return self.name + ": " + self.period
 
 class Requirement(models.Model):
-    course_name = models.CharField(max_length=70)
+    course_reference = models.ForeignKey(CourseReference)
     number = models.IntegerField()
     letter = models.CharField(max_length=1)
     text = models.TextField()
