@@ -77,6 +77,18 @@ def course_catalog(request):
 
     return response
 
+def view_course_catalog(request):
+    pass
+
+def import_course_catalog(request):
+    pass
+
+def edit_course_catalog(request):
+    pass
+
+def review_course_catalog(request):
+    pass
+
 def create_paperwork(request):
     response = None
     if request.method == 'POST':
@@ -99,3 +111,22 @@ def pending_requests(request):
 
 def home(request):
     pass
+
+def course_overview(request):
+    pass
+
+def course_home(request):
+    pass
+
+def course_attendence(request):
+    pass
+
+def course_requirements_signoff_checklist(request):
+    pass
+
+def course_requirements_signoff_scouts(request):
+    pass
+
+def scout_course_overview(request):
+    pass
+
