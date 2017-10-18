@@ -22,72 +22,150 @@ def course_catalog(request):
 
         return response
 
+    def save_course_catalog():
+        year = datetime.now().year
+        CourseReference.objects.filter(year=year).delete()
+        print(request.POST.getlist('courses'))
+        if 'courses' in request.POST:
+            selected_courses = request.POST.getlist('courses')
+            print(selected_courses)
+            for course in selected_courses:
+                print(course)
+                course_parts = course.split(': ')
+                course_reference = CourseReference(name=course_parts[0], 
+                    period=course_parts[1], year=datetime.now().year)
+                course_reference.save()
+        response = view_course_catalog()
+        
+        return response
+
+    def edit_course_catalog():
+        pass
+
+    def import_course_catalog():
+        form = ImportForm()
+        response = render(request, 'import_courses.html', {'form' : form})
+
+        return response
+
+    def review_course_catalog():
+        response = None
+        if 'doubleknot_roster' in request.FILES:
+            doubleknot_roster = request.FILES['doubleknot_roster']
+            courses = doubleknot.get_courses(doubleknot_roster.read())
+            display_courses = []
+            for course in courses:
+                display_name = course['name'] + ': ' + course['period']
+                display_courses.append((display_name, display_name))
+            form = ImportForm(display_courses)
+            year = datetime.now().year
+            course_catalog = CourseReference.objects.all().filter(year=year)
+            if len(course_catalog) == 0:
+                response = render(request, 'import_courses.html', 
+                    {'form' : form })
+            else:
+                # warn the user that their current course catalog will 
+                # be replaced.
+                warning_message = ('The existing course catalog will be ' 
+                    'replaced if these selections are saved.')
+                response = render(request, 'import_courses.html', 
+                    {'form' : form, 'warning_message' : warning_message})
+        else:
+            # error message telling the user to choose a file.
+            form = ImportForm()
+            error_message = "Please choose a Doubleknot roster to upload."
+            response = render(request, 'import_courses.html', 
+                {'form' : form, 'error_message' : error_message})
+
+        return response
+
+
     if request.method == 'POST':
         form = None
         if 'upload' in request.POST:
-            if 'doubleknot_roster' in request.FILES:
-                doubleknot_roster = request.FILES['doubleknot_roster']
-                courses = doubleknot.get_courses(doubleknot_roster.read())
-                display_courses = []
-                for course in courses:
-                    display_name = course['name'] + ': ' + course['period']
-                    display_courses.append((display_name, display_name))
-                form = ImportForm(display_courses)
-                year = datetime.now().year
-                course_catalog = CourseReference.objects.all().filter(year=year)
-                if len(course_catalog) == 0:
-                    response = render(request, 'import_courses.html', 
-                        {'form' : form })
-                else:
-                    # warn the user that their current course catalog will 
-                    # be replaced.
-                    warning_message = ('The existing course catalog will be ' 
-                        'replaced if these selections are saved.')
-                    response = render(request, 'import_courses.html', 
-                        {'form' : form, 'warning_message' : warning_message})
-            else:
-                # error message telling the user to choose a file.
-                form = ImportForm()
-                error_message = "Please choose a Doubleknot roster to upload."
-                response = render(request, 'import_courses.html', 
-                    {'form' : form, 'error_message' : error_message})
+            response = review_course_catalog()
         elif 'save' in request.POST:
-            year = datetime.now().year
-            CourseReference.objects.filter(year=year).delete()
-            print(request.POST.getlist('courses'))
-            if 'courses' in request.POST:
-                selected_courses = request.POST.getlist('courses')
-                print(selected_courses)
-                for course in selected_courses:
-                    print(course)
-                    course_parts = course.split(': ')
-                    course_reference = CourseReference(name=course_parts[0], 
-                        period=course_parts[1], year=datetime.now().year)
-                    course_reference.save()
-            response = view_course_catalog()
+            response = save_course_catalog()
         elif 'import' in request.POST:
-            form = ImportForm()
-            response = render(request, 'import_courses.html', {'form' : form})
+            response = import_course_catalog()
         elif 'edit' in request.POST:
             #TODO build the edit page.
-            pass
+            response = edit_course_catalog()
         #TODO think about a separate 'Add' page just for adding new courses.
     else:
         response = view_course_catalog()
 
     return response
 
-def view_course_catalog(request):
-    pass
+"""def view_course_catalog(request):
+    year = datetime.now().year
+    course_catalog = CourseReference.objects.all().filter(year=year)
+    response = None
+
+    if len(course_catalog) > 0:
+        response = render(request, 'course_catalog.html', 
+            {'course_catalog' : course_catalog})
+    else:
+        response = render(request, 'course_catalog.html')
+
+    return response
 
 def import_course_catalog(request):
-    pass
+    form = ImportForm()
+    response = render(request, 'import_courses.html', {'form' : form})
+
+    return response
 
 def edit_course_catalog(request):
     pass
 
 def review_course_catalog(request):
-    pass
+    if 'doubleknot_roster' in request.FILES:
+        doubleknot_roster = request.FILES['doubleknot_roster']
+        courses = doubleknot.get_courses(doubleknot_roster.read())
+        display_courses = []
+        for course in courses:
+            display_name = course['name'] + ': ' + course['period']
+            display_courses.append((display_name, display_name))
+        form = ImportForm(display_courses)
+        year = datetime.now().year
+        course_catalog = CourseReference.objects.all().filter(year=year)
+        if len(course_catalog) == 0:
+            response = render(request, 'import_courses.html', 
+                {'form' : form })
+        else:
+            # warn the user that their current course catalog will 
+            # be replaced.
+            warning_message = ('The existing course catalog will be ' 
+                              'replaced if these selections are saved.')
+            response = render(request, 'import_courses.html', 
+                        {'form' : form, 'warning_message' : warning_message})
+    else:
+        # error message telling the user to choose a file.
+        form = ImportForm()
+        error_message = "Please choose a Doubleknot roster to upload."
+        response = render(request, 'import_courses.html', 
+                    {'form' : form, 'error_message' : error_message})
+
+    return response
+
+def save_course_catalog(request):
+    year = datetime.now().year
+    CourseReference.objects.filter(year=year).delete()
+    print(request.POST.getlist('courses'))
+    if 'courses' in request.POST:
+        selected_courses = request.POST.getlist('courses')
+        print(selected_courses)
+        for course in selected_courses:
+            print(course)
+            course_parts = course.split(': ')
+            course_reference = CourseReference(name=course_parts[0], 
+                period=course_parts[1], year=datetime.now().year)
+            course_reference.save()
+    response = view_course_catalog()
+
+    return response
+"""
 
 def create_paperwork(request):
     response = None
@@ -101,7 +179,7 @@ def create_paperwork(request):
     return response
 
 def scouts(request):
-    return HttpResponse('SCOUTS')
+    return HttpResponse(request.POST['HTTP_REFERER'])
 
 def instructors(request):
     return HttpResponse('INSTRUCTORS')
