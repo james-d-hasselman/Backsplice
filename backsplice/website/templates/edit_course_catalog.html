@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Backsplice - Edit Course Catalog{% endblock %}
+
+{% block nav %}
+<ul>
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'create_paperwork' %}">Create Paperwork</a></li>
+<li><a href="{% url 'scouts' %}">Scouts</a></li>
+<li><a href="{% url 'course_catalog' %}">Course Catalog</a></li>
+<li><a href="{% url 'instructors' %}">Instructors</a></li>
+<li><a href="{% url 'pending_requests' %}">Pending Requests</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<h1>Edit Course Catalog</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div>
+        <label for="new-course">Course: </label>
+        <input type="text" name="course">
+    </div>
+    <div>
+        <label for="new-course">Period: </label>
+        <input type="text" name="course-period">
+     </div>
+    <input type="submit" value="Add" name="add" /> 
+</form>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {% for course in course_catalog %}
+        <div>
+            <input type="text" value="{{course.name}}" name=
+        </div>
+    {% endfor %}
+</form>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {% if course_catalog %}
+        <ul>
+            {% for course in course_catalog %}
+                <li>{{ course }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        The Course Catalog does not contain any courses.
+    {% endif %}
+    <input type="submit" value="Edit" name="edit" />
+    <input type="submit" value="Import" name="import" />
+</form>
+{% endblock %}
