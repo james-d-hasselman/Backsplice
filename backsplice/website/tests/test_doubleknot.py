@@ -77,6 +77,12 @@ class DoubleknotTests(TestCase):
             'Thor',
             'Troop-44,asdf',
             'Brownsea (all periods) Jul 26 2017 8:00 AM (999345)'])
+        # this next row is garbage data which Backsplice should gracefully 
+        # ignore
+        test_data_writer.writerow(['Group of 0',
+            '',
+            'Troop 1130 (812657)',
+            'Scout Summer Camp Week 5 Jul 26 2017 12:00 AM (432555)'])
         
         sheet = pyexcel.Sheet()
         sheet.csv = test_data
@@ -120,6 +126,10 @@ class DoubleknotTests(TestCase):
         doubleknot.create_courses(self.test_doubleknot_roster)
 
         courses = Course.objects.all()
+
+        # check that the correct number of courses were created
+        self.assertEqual(len(courses), 4)
+
         rifle_shooting = courses[0]
         archery = courses[1]
         cooking = courses[2]
@@ -198,11 +208,15 @@ class DoubleknotTests(TestCase):
 
     def test_get_courses(self):
         """
-        Given a doubleknot roster in standard Rodney format, get_courses() 
-        will return a list of all of the courses in the doubleknot roster.
+        Given a doubleknot roster in standard Rodney format, get_courses 
+        will return a list of all of the potential courses in doubleknot 
+        roster. It should gracefully handle and present garbage data.
         """
 
         courses = doubleknot.get_courses(self.test_doubleknot_roster)
+
+        # check that the correct number of courses were found
+        self.assertEquals(len(courses), 5)
 
         self.assertEquals(courses[0]['name'], 'Rifle Shooting')
         self.assertEquals(courses[0]['period'], 'period 1')
@@ -212,4 +226,7 @@ class DoubleknotTests(TestCase):
         self.assertEquals(courses[2]['period'], 'periods 1 & 2')
         self.assertEquals(courses[3]['name'], 'Brownsea')
         self.assertEquals(courses[3]['period'], 'all periods')
+        self.assertEquals(courses[4]['name'], 'Scout Summer Camp Week 5 Jul 26 2017 12:00 AM')
+        self.assertEquals(courses[4]['period'], '')
+
 
