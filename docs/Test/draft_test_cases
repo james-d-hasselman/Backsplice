@@ -1,0 +1,92 @@
+Course Catalog
+- When the user navigates to the course catalog page and there are courses in 
+  the catalog the courses are displayed.
+
+- When the user navigates to the course catalog page and there are no courses 
+  in the catalog a message is displayed indicating there are no courses.
+
+- When the user is on the course catalog page and clicks 'Edit' the course 
+  catalog edit page is displayed.
+
+- When the user is on the course catalog page and clidks 'Import' the import 
+  courses page is displayed.
+
+-------------------------------------------------------------------------------
+Edit Course Catalog
+- When the user navigates to the edit course catalog page and there are 
+  courses in the catalog the courses are displayed one course per line with a 
+  textbox containing the name of the course and a textbox containing the 
+  period.
+
+- When the user navigates to the edit course catalog page and there are no 
+  courses a message is displayed indicating there are no courses in the 
+  catalog.
+
+- When the user clicks "Add" without providing a course name an error message 
+  is displayed that says "Course name is required."
+
+- When the user clicks "Add" without providing a period an error message is 
+  displayed that says "Period is required."
+
+- When the course name of any course in the course catalog is made blank and 
+  the user clicks "Save", the edit course catalog page is displayed again with 
+  the previous course name restored and an error message is displayed that 
+  says "Course name cannot be blank."
+
+- When the period of any course in the course catalog is made blank and the 
+  user clicks "Save", the edit course catalog page is displayed again with the 
+  previous period restored and an error message is displayed that says 
+  "Period cannot be blank."
+
+- When the user clicks "Add" and the provided course name and period name 
+  match the name of an existing course in the course catalog, an error message 
+  is displayed which says "Course already present in the course catalog."
+
+- When the user clicks "Save" and two or more courses in the course catalog 
+  have matching course names and periods, the edit course catalog page is 
+  displayed again with the offending change reverted and an error message is 
+  displayed that says "Courses must be unique."
+
+- When the user clicks "Add" and the provided course name and period are 
+  valid, the course is added to the course catalog and the edit course catalog 
+  page is displayed again with the new course included in the course catalog 
+  section.
+
+- When the user clicks "Save" and the edited courses have valid names and 
+  periods, the changes are saved to the course catalog and the user is 
+  returned to the course catalog screen which displays the changed course 
+  catalog.
+
+- When the user clicks "Add" and the provided course name and period are 
+  valid and there are unsaved changes to the course catalog, the course is 
+  added to the course catalog and the edit course catalog page is displayed 
+  again with the unsaved changes discarded and the new course included in the 
+  course catalog section.
+
+- When the user clicks "Save" and the edited courses have valid names and 
+  periods and the user has provided a course name and period in the fields 
+  used to add a course to the course catalog, the values in the course name 
+  and period fields used for adding a course to the catalog are discarded 
+  and the the changes are saved to the course catalog and the user is returned 
+  to the course catalog screen which displays the changed course catalog.
+
+-------------------------------------------------------------------------------
+Import Courses
+- When the user navigates to the import courses page, a file browser field and 
+  an upload button are displayed.
+
+- When the user clicks "Upload" without providing a file name, the import 
+  courses page is displayed again with a message that says "Please provide a 
+  Doubleknot roster to upload."
+
+- When the user provides a file that is not in one of the approved formats 
+  (.ods, .xls, .xlsx) and clicks "Upload", an error message is displayed which 
+  says "Doubleknot rosters must be in one of the following formats: .xls, 
+  .xlsx, or .ods"
+
+- When the user provides a file that is in the correct format and clicks 
+  "Upload", the courses are read from the file and the user is redirected to 
+  the review course catalog page."
+
+-------------------------------------------------------------------------------
+
