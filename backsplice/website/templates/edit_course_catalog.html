@@ -31,25 +31,16 @@
 
 <form action="" method="post">
     {% csrf_token %}
-    {% for course in course_catalog %}
-        <div>
-            <input type="text" value="{{course.name}}" name=
-        </div>
-    {% endfor %}
-</form>
-
-<form action="" method="post">
-    {% csrf_token %}
     {% if course_catalog %}
-        <ul>
-            {% for course in course_catalog %}
-                <li>{{ course }}</li>
-            {% endfor %}
-        </ul>
+        {% for course in course_catalog %}
+            <div>
+                <input type="text" value="{{course.name}}" name="n{{course.id}}"/>
+                <input type="text" value="{{course.period}}" name="p{{course.id}}"/>
+            </div>
+        {% endfor %}
     {% else %}
         The Course Catalog does not contain any courses.
     {% endif %}
-    <input type="submit" value="Edit" name="edit" />
-    <input type="submit" value="Import" name="import" />
+    <input type="submit" value="Save" name="save-edit"/>
 </form>
 {% endblock %}

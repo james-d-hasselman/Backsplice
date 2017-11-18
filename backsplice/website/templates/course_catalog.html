@@ -16,18 +16,18 @@
 {% block content %}
 <h1>Course Catalog</h1>
 
-<form action="" method="post">
-    {% csrf_token %}
-    {% if course_catalog %}
-        <ul>
-            {% for course in course_catalog %}
-                <li>{{ course }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        The Course Catalog does not contain any courses.
-    {% endif %}
-    <input type="submit" value="Edit" name="edit" />
-    <input type="submit" value="Import" name="import" />
-</form>
+{% csrf_token %}
+{% if course_catalog %}
+    <ul>
+        {% for course in course_catalog %}
+            <li>{{ course }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    The Course Catalog does not contain any courses.
+{% endif %}
+
+<a href="{% url 'edit_course_catalog' %}">Edit</a>
+<a href="{% url 'import_course_catalog' %}">Import</a>
+
 {% endblock %}
