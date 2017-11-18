@@ -28,4 +28,10 @@ urlpatterns = [
         name='create_paperwork'),
     url(r'^course_catalog/$', views.course_catalog, 
         name='course_catalog'),
+    url(r'^course_catalog/edit/$', views.edit_course_catalog, 
+        name='edit_course_catalog'),
+    url(r'^course_catalog/import/$', views.import_course_catalog, 
+        name='import_course_catalog'),
+    url(r'^course_catalog/import/review/$', views.review_course_catalog, 
+        name='review_course_catalog'),
 ]
