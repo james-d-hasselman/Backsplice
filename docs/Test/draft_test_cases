@@ -89,4 +89,29 @@ Import Courses
   the review course catalog page."
 
 -------------------------------------------------------------------------------
+Review Course Catalog
+- When the user navigates to the review course catalog page without completing 
+  the import courses page, the user is redirected to the import courses page.
+
+- When the review course catalog page is displayed and a Doubleknot roster has 
+  been uploaded through the import courses page, the review course catalog 
+  page displays a list of the uploaded courses with a checked checkbox next to 
+  it.
+
+- When the review course catalog page is displayed and a Doubleknot roster has 
+  been uploaded through the import courses page and the course catalog already 
+  contains courses, the review course catalog page displays a warning message 
+  that says "The existing course catalog will be replaced if these selections 
+  are saved."
+
+- When the user clicks "Save" and there are courses with checked checkboxes, 
+  the course catalog is erased and the courses with checked checkboxes are 
+  saved to the course catalog and the user is redirected to the course catalog 
+  page.
+
+- When the user clicks "Save" and there are no courses with checked 
+  checkboxes, the course catalog is left intact and the user is redirected to 
+  the course catalog page.
+
+-------------------------------------------------------------------------------
 
