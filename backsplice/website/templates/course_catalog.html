@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Backsplice - Import Courses{% endblock %}
+{% block title %}Backsplice - Course Catalog{% endblock %}
 
 {% block nav %}
 <ul>
@@ -18,16 +18,16 @@
 
 {% csrf_token %}
 {% if course_catalog %}
-    <ul>
+    <ul id='catalog'>
         {% for course in course_catalog %}
             <li>{{ course }}</li>
         {% endfor %}
     </ul>
 {% else %}
-    The Course Catalog does not contain any courses.
+    <span id='message'>The Course Catalog does not contain any courses.</span>
 {% endif %}
 
-<a href="{% url 'edit_course_catalog' %}">Edit</a>
-<a href="{% url 'import_course_catalog' %}">Import</a>
+<a id='edit' href="{% url 'edit_course_catalog' %}">Edit</a>
+<a id='import' href="{% url 'import_course_catalog' %}">Import</a>
 
 {% endblock %}

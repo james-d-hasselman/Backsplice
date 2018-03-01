@@ -15,7 +15,9 @@
 
 {% block content %}
 <h1>Edit Course Catalog</h1>
-
+<br/>
+<span id="error_message">{{error_message}}</span>
+<br/>
 <form action="" method="post">
     {% csrf_token %}
     <div>
@@ -29,18 +31,19 @@
     <input type="submit" value="Add" name="add" /> 
 </form>
 
-<form action="" method="post">
     {% csrf_token %}
     {% if course_catalog %}
-        {% for course in course_catalog %}
-            <div>
-                <input type="text" value="{{course.name}}" name="n{{course.id}}"/>
-                <input type="text" value="{{course.period}}" name="p{{course.id}}"/>
-            </div>
-        {% endfor %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for course in course_catalog %}
+                <div>
+                    <input type="text" value="{{course.name}}" name="n{{course.id}}"/>
+                    <input type="text" value="{{course.period}}" name="p{{course.id}}"/>
+                </div>
+            {% endfor %}
+            <input type="submit" value="Save" name="save"/>
+        </form>
     {% else %}
-        The Course Catalog does not contain any courses.
+        <span id="message">The Course Catalog does not contain any courses.</span>
     {% endif %}
-    <input type="submit" value="Save" name="save-edit"/>
-</form>
 {% endblock %}

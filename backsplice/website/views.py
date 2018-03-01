@@ -32,6 +32,7 @@ def edit_course_catalog(request):
         course_reference.period = request.POST['course-period']
         course_reference.year = year
         course_reference.save()
+        print('Add ID: {}'.format(course_reference.id))
 
     def save_edited_course_catalog():
         year = datetime.now().year
@@ -44,14 +45,83 @@ def edit_course_catalog(request):
             course.save()
 
     response = None
+    print(request.method)
     if request.method == 'POST':
+        print('HERE')
         if 'add' in request.POST:
             # TODO keep the courses in the session until the user hits save
-            add_course()
-            response = redirect('edit_course_catalog')
-        if 'save-edit' in request.POST:
-            save_edited_course_catalog()
-            response = redirect('course_catalog')
+            print('request.POST[course] = {}'.format(request.POST['course']))
+            year = datetime.now().year
+            course_name = request.POST['course']
+            period = request.POST['course-period']
+            course = CourseReference.objects.all().filter(
+                         name=course_name,
+                         period=period,
+                         year=year)
+            if request.POST['course'] == '':
+                print("HERE")
+                course_catalog = CourseReference.objects.all().filter(year=year)
+                response = render(request, 'edit_course_catalog.html',
+                               {'course_catalog' : course_catalog, 
+                                'error_message' : 'Course name is required.'})
+            elif request.POST['course-period'] == '':
+                course_catalog = CourseReference.objects.all().filter(year=year)
+                response = render(request, 'edit_course_catalog.html',
+                               {'course_catalog' : course_catalog,
+                                'error_message' : 'Period is required.'})
+            elif (len(course) > 0 and 
+                  course[0].name == course_name and 
+                  course[0].period == period):
+                course_catalog = CourseReference.objects.all().filter(year=year)
+                response = render(request, 'edit_course_catalog.html', 
+                               {'course_catalog' : course_catalog,
+                                'error_message' : 'Course already present in the course catalog'})
+            else:
+                add_course()
+                response = redirect('edit_course_catalog')
+        if 'save' in request.POST:
+            year = datetime.now().year
+            course_catalog = CourseReference.objects.all().filter(year=year)
+            is_valid = True
+            has_valid_course_names = True
+            has_valid_periods = True
+            for course in course_catalog:
+                if request.POST['n{}'.format(course.id)] == '':
+                    has_valid_course_names = False
+                elif request.POST['p{}'.format(course.id)] == '':
+                    has_valid_periods = False
+            contains_no_duplicates = True
+            #TODO implement logic to handle duplicates
+            for course in course_catalog:
+                for comparison_course in course_catalog:
+                    if not course.id == comparison_course.id:
+                        print("TRUE")
+                        if (not request.POST['n{}'.format(course.id)] == '' and 
+                           not request.POST['n{}'.format(comparison_course.id)] == '' and 
+                           (request.POST['n{}'.format(course.id)] == 
+                               request.POST['n{}'.format(comparison_course.id)]) and 
+                           (request.POST['p{}'.format(course.id)] == 
+                               request.POST['p{}'.format(comparison_course.id)])):
+                               contains_no_duplicates = False
+                               print("FUCK")
+
+            if (has_valid_course_names and 
+                has_valid_periods and 
+                contains_no_duplicates):
+                save_edited_course_catalog()
+                response = redirect('course_catalog')
+            elif not has_valid_course_names:
+                response = render(request, 'edit_course_catalog.html', 
+                               {'error_message' : 'Course name cannot be blank.',
+                                'course_catalog' : course_catalog})
+            elif not has_valid_periods:
+                response = render(request, 'edit_course_catalog.html',
+                               {'error_message' : 'Period cannot be blank.',
+                                'course_catalog' : course_catalog})
+            elif not contains_no_duplicates:
+                response = render(request, 'edit_course_catalog.html',
+                               {'error_message' : 'Courses must be unique.',
+                                'course_catalog' : course_catalog})
     else:
         year = datetime.now().year
         course_catalog = CourseReference.objects.all().filter(year=year)
@@ -59,9 +129,7 @@ def edit_course_catalog(request):
             response = render(request, 'edit_course_catalog.html', 
                 {'course_catalog' : course_catalog})
         else:
-            print('HERE')
             response = render(request, 'edit_course_catalog.html')
-            print(response)
     return response
 
 def import_course_catalog(request):
